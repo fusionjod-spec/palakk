@@ -1,0 +1,354 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Our Future Adventures</title>
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #E6D6FF;
+  text-align: center;
+  overflow-x: hidden;
+}
+
+h1 {
+  margin-top: 60px;
+  font-size: 42px;
+}
+
+.top-message {
+  max-width: 650px;
+  margin: 10px auto 20px auto;
+  font-size: 18px;
+  background: white;
+  padding: 12px 18px;
+  border-radius: 14px;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+}
+
+.subtitle {
+  opacity: 0.8;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
+  padding: 40px;
+}
+
+.card {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+  transition: transform 0.25s;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-8px);
+}
+
+.emoji {
+  font-size: 40px;
+}
+
+.popup {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  align-items: center;
+  justify-content: center;
+}
+
+.popup-content {
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  max-width: 420px;
+}
+
+.close {
+  margin-top: 15px;
+  padding: 10px 16px;
+  border: none;
+  border-radius: 10px;
+  background: #9b7cff;
+  color: white;
+  cursor: pointer;
+}
+
+.gallery {
+  padding: 30px;
+}
+
+.gallery img {
+  width: 220px;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 18px;
+  margin: 10px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
+
+.sorry-section {
+  margin: 60px 20px;
+}
+
+.slide {
+  display: none;
+  background: white;
+  padding: 30px;
+  border-radius: 18px;
+  max-width: 500px;
+  margin: auto;
+}
+
+.slide.active {
+  display: block;
+}
+
+.slide-buttons {
+  margin-top: 20px;
+}
+
+.question {
+  margin: 60px 0;
+}
+
+button {
+  padding: 12px 22px;
+  margin: 10px;
+  border: none;
+  border-radius: 12px;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+.yes {
+  background: #9b7cff;
+  color: white;
+}
+
+.no {
+  background: #ddd;
+}
+
+.result {
+  font-size: 20px;
+  margin-top: 20px;
+}
+
+.floating {
+  position: fixed;
+  bottom: -50px;
+  font-size: 24px;
+  animation: floatUp linear infinite;
+  opacity: 0.8;
+}
+
+@keyframes floatUp {
+  from { transform: translateY(0); }
+  to { transform: translateY(-110vh); }
+}
+</style>
+</head>
+
+<body>
+
+<h1>Our Future Adventures 💜</h1>
+
+<div class="top-message">
+tera ekdam se gussa krne ka mann kr sakta hai toh mai ekdam se terko khush nai kr sakta? 🙂
+</div>
+
+<p class="subtitle">Some fun things we could do together someday</p>
+
+<div class="container">
+
+<div class="card" onclick="showPopup('pizza')">
+<div class="emoji">🍕</div>
+<h3>Pizza Challenge</h3>
+<p>Find the best pizza place together.</p>
+</div>
+
+<div class="card" onclick="showPopup('movie')">
+<div class="emoji">🎬</div>
+<h3>Movie Night</h3>
+<p>You pick the movie, I bring snacks.</p>
+</div>
+
+<div class="card" onclick="showPopup('walk')">
+<div class="emoji">🌆</div>
+<h3>Evening Walk</h3>
+<p>Talking about random things.</p>
+</div>
+
+<div class="card" onclick="showPopup('coffee')">
+<div class="emoji">☕</div>
+<h3>Coffee Mission</h3>
+<p>Finding the best café.</p>
+</div>
+
+</div>
+
+<div class="popup" id="popup">
+<div class="popup-content" id="popupText"></div>
+</div>
+
+<h2>My Favorite Pictures of You 🌸</h2>
+
+<div class="gallery">
+<img src="her1.jpg">
+<img src="her2.jpg">
+<img src="her3.jpg">
+</div>
+
+<div class="sorry-section">
+<h2>I Also Want to Say Something 💬</h2>
+
+<div class="slide active">
+<p>I know I made some jokes that probably weren't the best.</p>
+</div>
+
+<div class="slide">
+<p>I didn't mean to make you uncomfortable or upset.</p>
+</div>
+
+<div class="slide">
+<p>You're actually really important to me.</p>
+</div>
+
+<div class="slide">
+<p>So... I'm genuinely sorry about that.</p>
+</div>
+
+<div class="slide">
+<p>I hope this page makes you smile a little 🙂</p>
+</div>
+
+<div class="slide-buttons">
+<button onclick="prevSlide()">⬅ Previous</button>
+<button onclick="nextSlide()">Next ➡</button>
+</div>
+</div>
+
+<div class="question">
+<h2>So... are you in? 😊</h2>
+
+<button class="yes" onclick="yesAnswer()">Yes 💜</button>
+<button class="no" id="noBtn" onclick="noAnswer()">No 😅</button>
+
+<div class="result" id="result"></div>
+</div>
+
+<script>
+let noCount = 0;
+
+function yesAnswer() {
+  document.getElementById("result").innerHTML =
+  "Yay! That means our adventure starts soon ✨";
+}
+
+function noAnswer() {
+  noCount++;
+
+  if (noCount === 1) {
+    document.getElementById("result").innerHTML =
+    "Hmm... are you sure? Try again 😌";
+  }
+  else if (noCount === 2) {
+    document.getElementById("result").innerHTML =
+    "I think you clicked the wrong button 👀";
+  }
+  else if (noCount === 3) {
+    document.getElementById("result").innerHTML =
+    "Okay last chance... are you REALLY sure?";
+  }
+  else {
+    document.getElementById("result").innerHTML =
+    "Yeah... I'm removing that option now 😌";
+    document.getElementById("noBtn").style.display = "none";
+  }
+}
+
+function showPopup(type) {
+  let text = "";
+
+  if(type === "pizza") {
+    text = "🧸 What do you prefer? eating pizza somewhere in a cafe across the tables or making it together by our own?";
+  }
+
+  if(type === "movie") {
+    text = "You wanted some horror movie to watch it together within the blankets with ice cream and popcorn 🍿, imma let you decide the movie.";
+  }
+
+  if(type === "walk") {
+    text = "You're a little too lazy but I like running but I can slow my pace and make it to running for you so when are we having our evening walk with random dogs and cats with us?";
+  }
+
+  if(type === "coffee") {
+    text = "i dont know much about coffee das on you hehe ☕";
+  }
+
+  document.getElementById("popupText").innerHTML =
+  "<p>" + text + "</p><button class='close' onclick='closePopup()'>Close</button>";
+
+  document.getElementById("popup").style.display = "flex";
+}
+
+function closePopup() {
+  document.getElementById("popup").style.display = "none";
+}
+
+let slideIndex = 0;
+const slides = document.querySelectorAll(".slide");
+
+function showSlide(index) {
+  slides.forEach(slide => slide.classList.remove("active"));
+  slides[index].classList.add("active");
+}
+
+function nextSlide() {
+  slideIndex++;
+  if (slideIndex >= slides.length) slideIndex = slides.length - 1;
+  showSlide(slideIndex);
+}
+
+function prevSlide() {
+  slideIndex--;
+  if (slideIndex < 0) slideIndex = 0;
+  showSlide(slideIndex);
+}
+
+const emojis = ["💜","✨","🌸","💕","💫"];
+
+function createFloatingEmoji() {
+  const emoji = document.createElement("div");
+  emoji.classList.add("floating");
+  emoji.innerHTML = emojis[Math.floor(Math.random() * emojis.length)];
+
+  emoji.style.left = Math.random() * 100 + "vw";
+  emoji.style.animationDuration = (5 + Math.random() * 5) + "s";
+
+  document.body.appendChild(emoji);
+
+  setTimeout(() => {
+    emoji.remove();
+  }, 10000);
+}
+
+setInterval(createFloatingEmoji, 600);
+</script>
+
+</body>
+</html>
+```
